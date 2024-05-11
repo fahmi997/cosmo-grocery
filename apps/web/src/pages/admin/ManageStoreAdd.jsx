@@ -30,14 +30,18 @@ const ManageStoreAdd = () => {
         },
       });
       setAdminList(result.data.result.rows);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getProvinceList = async () => {
     try {
       const result = await API_CALL.get('/province');
       setProvinceList(result.data.result);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getCityList = async () => {
     try {
@@ -47,7 +51,9 @@ const ManageStoreAdd = () => {
         },
       });
       setCityList(result.data.result);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getDistrictList = async () => {
     try {
@@ -55,9 +61,10 @@ const ManageStoreAdd = () => {
         params: { cityId: city },
       });
       setDistrictList(result.data.result);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
-  console.log(admin);
   const onSubmitData = async () => {
     try {
       setIsLoading(true);
@@ -75,7 +82,7 @@ const ManageStoreAdd = () => {
       if (isNaN(postal) || postal.length < 5) {
         throw { message: 'Invalid postal code' };
       }
-      const result = await API_CALL.post(
+      await API_CALL.post(
         '/store',
         {
           district: district,

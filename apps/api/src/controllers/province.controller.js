@@ -1,7 +1,7 @@
 import resTemplate from '../helper/resTemplate';
 import { findAllProvinceService } from '../services/address/address.service';
 
-export const getALlProvinceController = async (req, res, next) => {
+export const getAllProvinceController = async (req, res, next) => {
   try {
     const result = await findAllProvinceService();
     return res
