@@ -18,7 +18,7 @@ const UserFindCategory = () => {
   const currStore = useSelector((reducer) => reducer.storeReducer);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [categoryData, setCategoryData] = useState(null);
+  const [categoryData, setCategoryData] = useState([]);
   const [productData, setProductData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +38,7 @@ const UserFindCategory = () => {
     if (res) {
       setCategoryData(res.data.result.rows);
     }
+    console.log("getCategoryData : ", res);
     setIsLoading(false);
   };
 
@@ -67,6 +68,12 @@ const UserFindCategory = () => {
         <div className="flex flex-col gap-2">
           <span className="font-bold text-2xl lg:text-4xl text-blue-700">Categories</span>
           <div className="flex w-full p-2 md:p-4 overflow-auto ">
+            {categoryData.length ||
+              <div className="flex w-full h-20 md:h-28 relative justify-center items-center">
+                <span className=" font-bold text-3xl lg:text-4xl text-gray-300">
+                  No Category Found
+                </span>
+              </div>}
             <div className="grid grid-rows-1 grid-flow-col gap-4">
               {categoryData &&
                 categoryData.map((value, index) => (
@@ -114,9 +121,14 @@ const UserFindCategory = () => {
           <span className="font-bold text-2xl lg:text-4xl text-blue-700">
             Products {searchParams.get('q') && `for "${searchParams.get('q')}"`}
           </span>
+          {!productData.length &&
+            <div className="flex w-full h-60 md:h-64 lg:h-80 relative justify-center items-center">
+              <span className=" font-bold text-3xl lg:text-4xl text-gray-300">
+                No Product Found
+              </span>
+            </div>}
           <div className="flex w-full">
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 grid-flow-row w-full place-items-center gap-4">
-              {!productData.length && <p>Product not available!</p>}
               {productData.map((value, index) => (
                 <UserProductCard
                   key={index}
