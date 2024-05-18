@@ -2,12 +2,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Dropdo
 import { HiOutlineTrash, HiPencilSquare, HiMiniEllipsisHorizontal } from 'react-icons/hi2';
 import { customTable } from "../../helpers/flowbiteCustomTheme";
 import { useSelector } from "react-redux";
+import InformationalText from "../InformationalText";
 
 const ManageInventoryTable = ({ data, onEdit, onDelete, page }) => {
   const currentUser = useSelector(state => state.userReducer);
 
   return <div className="grid overflow-x-auto">
-    {data ? !data.length ? <span>Data not available</span> :
+    {data ? !data.length ? <InformationalText placeholder={"Data Not Available"}/> :
       <Table theme={customTable}>
         <TableHead>
           <TableHeadCell >#</TableHeadCell>
@@ -51,7 +52,7 @@ const ManageInventoryTable = ({ data, onEdit, onDelete, page }) => {
           })}
         </TableBody>
       </Table>
-      : <span>Data not available</span>}
+      : <InformationalText placeholder={"Data Not Available"}/>}
   </div>
 };
 

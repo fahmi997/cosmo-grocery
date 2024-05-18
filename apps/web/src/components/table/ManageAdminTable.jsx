@@ -1,10 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, Dropdown } from "flowbite-react";
 import { HiOutlineTrash, HiPencilSquare, HiMiniEllipsisHorizontal} from 'react-icons/hi2';
 import { customTable } from "../../helpers/flowbiteCustomTheme";
+import InformationalText from "../InformationalText";
 
 const ManageAdminTable = ({data, page, onEdit, onDelete, onChangePassword}) => {
   return <div className="grid">
-  {data ? !data.length ? <span>Data not available</span> :
+  {data ? !data.length ? <InformationalText placeholder={"Data Not Available"}/> :
     <Table theme={customTable} >
       <TableHead>
         <TableHeadCell >#</TableHeadCell>
@@ -50,7 +51,7 @@ const ManageAdminTable = ({data, page, onEdit, onDelete, onChangePassword}) => {
         })}
       </TableBody>
     </Table>
-    : <span>Data not available</span>}
+    : <InformationalText placeholder={"Data Not Available"}/>}
 </div>
 }
 

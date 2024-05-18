@@ -37,14 +37,19 @@ const ManageProduct = () => {
 
   const getProduct = async () => {
     setIsLoading(true);
-    const res = await API_CALL.get('product', {
-      params: queryParam
-    });
-    if (res) {
-      setData(res.data.result.rows);
-      setTotalPage(res.data.result.totalPage)
+    try {
+      const res = await API_CALL.get('product', {
+        params: queryParam
+      });
+      if (res) {
+        setData(res.data.result.rows);
+        setTotalPage(res.data.result.totalPage)
+        setIsLoading(false);
+      }
+    } catch (error) {
       setIsLoading(false);
     }
+
   };
 
   const handleDeleteButton = async (id) => {

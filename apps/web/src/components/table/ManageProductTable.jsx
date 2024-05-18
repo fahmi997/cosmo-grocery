@@ -3,12 +3,13 @@ import { HiOutlineTrash, HiPencilSquare, HiMiniEllipsisHorizontal } from 'react-
 import { customTable } from "../../helpers/flowbiteCustomTheme";
 import { IMG_URL_PRODUCT } from "../../constants/imageURL";
 import { useSelector } from "react-redux";
+import InformationalText from "../InformationalText";
 
 const ManageProductTable = ({ data, onEdit, onDelete, page }) => {
   const currentUserRole = useSelector((reducer) => reducer.userReducer.role);
 
   return <div className="grid overflow-x-auto">
-    {data ? !data.length ? <span>Data not available</span> :
+    {data ? !data.length ? <InformationalText placeholder={"Data Not Available"}/> :
       <Table theme={customTable}>
         <TableHead>
           <TableHeadCell >#</TableHeadCell>
@@ -57,7 +58,7 @@ const ManageProductTable = ({ data, onEdit, onDelete, page }) => {
           })}
         </TableBody>
       </Table>
-      : <span>Data not available</span>}
+      : <InformationalText placeholder={"Data Not Available"}/>}
   </div>
 };
 

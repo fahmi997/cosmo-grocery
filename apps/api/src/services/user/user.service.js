@@ -31,6 +31,7 @@ export const findAllUserService = async (queryParam) => {
     const result = await users.findAndCountAll(params);
 
     if (limit !== 'none') result.totalPage = Math.ceil(result.count / limit);
+    if (result.totalPage === 0) result.totalPage = 1;
 
     return result;
   } catch (error) {

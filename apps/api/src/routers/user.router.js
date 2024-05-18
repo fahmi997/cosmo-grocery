@@ -5,7 +5,7 @@ import {
   validateUser,
 } from '../middleware/tokenValidation';
 import uploader from '../helper/uploader';
-// import getAllUser from './admin/getAllUser';
+
 import { specialTokenValidation } from '../middleware/specialTokenValidation';
 import {
   changeEmailController,

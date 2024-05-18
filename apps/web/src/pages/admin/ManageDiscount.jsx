@@ -8,6 +8,7 @@ import ModalConfirm from "../../components/modal/ModalConfirm";
 import { deleteDiscount, getDiscount } from "../../helpers/queryData";
 import { customButton } from "../../helpers/flowbiteCustomTheme";
 import LayoutDashboard from "../../components/LayoutDashboard";
+import InformationalText from "../../components/InformationalText";
 
 const ManageDiscount = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,7 +20,7 @@ const ManageDiscount = () => {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    getDiscount(setDiscountData, setIsLoading, setTotalPage, {limit: 12, page: searchParams.get('page')});
+    getDiscount(setDiscountData, setIsLoading, setTotalPage, { limit: 12, page: searchParams.get('page') });
   }, [setDiscountData, searchParams.get('page')]);
 
   const onPageChange = (page) => {
@@ -45,7 +46,10 @@ const ManageDiscount = () => {
             <Button theme={customButton} size={'responsive'} color="secondary" onClick={() => navigate('/manage/discount/create')}>Create Discount</Button>
           </div>
           <div className="mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-4 lg:gap-y-10 pb-5">
-            {discountData && discountData.map((val, idx) => <CardManageDiscount key={idx} data={val} onDelete={() => { setOpenModal(true); setDiscID(val.id) }} onEdit={() => navigate(`/manage/discount/edit/${val.UUID}`)} />)}
+            {discountData ? !discountData.length ? <InformationalText placeholder={"Data Not Available"}/> :
+              discountData.map((val, idx) => <CardManageDiscount key={idx} data={val} onDelete={() => { setOpenModal(true); setDiscID(val.id) }} onEdit={() => navigate(`/manage/discount/edit/${val.UUID}`)} />)
+              : <InformationalText placeholder={"Data Not Available"}/>
+            }
           </div>
         </div>
         <div className='grid max-w-full overflow-x-auto pb-4 justify-items-center lg:justify-items-end'>
