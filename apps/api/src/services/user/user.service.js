@@ -31,6 +31,7 @@ export const findAllUserService = async (queryParam) => {
     const result = await users.findAndCountAll(params);
 
     if (limit !== 'none') result.totalPage = Math.ceil(result.count / limit);
+    if (result.totalPage === 0) result.totalPage = 1;
 
     return result;
   } catch (error) {
@@ -62,8 +63,13 @@ export const findOneUserByEmailAndTypeService = async (email, type) => {
 };
 
 export const createUserService = async (data = {}, transaction) => {
-  const result = await users.create(data, { transaction: transaction });
-  return result;
+  try {
+    const result = await users.create(data, { transaction: transaction });
+    return result;
+    
+  } catch (error) {
+    console.log("ERROR:", error);
+  }
 };
 
 export const verifyUserAccountService = async (

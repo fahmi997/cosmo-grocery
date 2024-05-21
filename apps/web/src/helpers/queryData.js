@@ -66,6 +66,7 @@ export const getDiscount = async (setValue, setLoading, setTotalPage, queryParam
 
     setLoading && setLoading(false);
   } catch (error) {
+    setLoading(false);
     console.error(error);
   }
 };

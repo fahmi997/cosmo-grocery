@@ -1,10 +1,11 @@
 import { Table, TableHead,TableHeadCell, TableBody, TableRow, TableCell } from "flowbite-react";
 import { customTable } from "../../helpers/flowbiteCustomTheme";
 import { monthString } from "../../constants/monthString";
+import InformationalText from "../InformationalText";
 
 const MonthlySalesReportTable = ({ data, page }) => {
   return <>
-    {data ? !data.length ? <span>Data not available</span> :
+    {data ? !data.length ? <InformationalText placeholder={"Data Not Available"}/> :
       <Table theme={customTable}>
         <TableHead>
           <TableHeadCell >#</TableHeadCell>
@@ -21,7 +22,7 @@ const MonthlySalesReportTable = ({ data, page }) => {
           })}
         </TableBody>
       </Table>
-      : <span>Data not available</span>}
+      : <InformationalText placeholder={"Data Not Available"}/>}
   </>
 };
 

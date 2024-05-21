@@ -8,6 +8,7 @@ import { customTable } from '../../helpers/flowbiteCustomTheme';
 import { useSearchParams } from 'react-router-dom';
 import ResponsivePagination from '../../components/ResponsivePagination';
 import { onPageChange } from '../../helpers/pagination';
+import InformationalText from '../../components/InformationalText';
 
 const RegisteredUser = () => {
   const [users, setUsers] = useState([]);
@@ -50,12 +51,13 @@ const RegisteredUser = () => {
       )
     })
   }
-
+  console.log("Total Page : ", totalPage);
   return <>
     <LayoutDashboard>
       <LoadingSpinner isLoading={isLoading} size={16} />
       <LayoutPageAdmin title='Registered User'>
         <div className='grid grid-cols-1 overflow-x-auto '>
+          {users ? !users.length ? <InformationalText placeholder={"Data Not Available"}/> : 
           <Table theme={customTable} >
             <TableHead>
               <TableHeadCell>#</TableHeadCell>
@@ -67,6 +69,8 @@ const RegisteredUser = () => {
               {printUser()}
             </TableBody>
           </Table>
+          : <InformationalText placeholder={"Data Not Available"}/>
+          }
         </div>
         <div className='mt-5'>
         <ResponsivePagination

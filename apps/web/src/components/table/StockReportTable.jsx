@@ -1,12 +1,13 @@
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { customTable } from "../../helpers/flowbiteCustomTheme";
 import { useSelector } from "react-redux";
+import InformationalText from "../InformationalText";
 
 const StockReportTable = ({ data }) => {
   const currentUserRole = useSelector(state => state.userReducer.role);
 
   return <>
-    {data ? !data.length ? <span>Data not available</span> :
+    {data ? !data.length ? <InformationalText placeholder={"Data Not Available"}/> :
       <Table theme={customTable}>
         <TableHead>
           <TableHeadCell >#</TableHeadCell>
@@ -36,7 +37,7 @@ const StockReportTable = ({ data }) => {
           })}
         </TableBody>
       </Table>
-      : <span>Data not available</span>}
+      : <InformationalText placeholder={"Data Not Available"}/>}
   </>
 };
 

@@ -70,7 +70,7 @@ const UserFindCategory = () => {
           <div className="flex w-full p-2 md:p-4 overflow-auto ">
             {categoryData.length ||
               <div className="flex w-full h-20 md:h-28 relative justify-center items-center">
-                <span className=" font-bold text-3xl lg:text-4xl text-gray-300">
+                <span className="font-bold text-3xl lg:text-4xl text-gray-300">
                   No Category Found
                 </span>
               </div>}
