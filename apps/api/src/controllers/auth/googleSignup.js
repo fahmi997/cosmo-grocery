@@ -32,8 +32,7 @@ const googleSignUp = async (req, res, next) => {
         role: 'user',
         isVerified: true,
         type: 'google',
-      },
-      { transaction: t },
+      }, t,
     );
     const { id, name, email, role, type, image } = result.dataValues;
     const token = jwt.sign(

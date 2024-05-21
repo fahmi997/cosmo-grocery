@@ -1,39 +1,38 @@
-import { GoogleLogin, useGoogleLogout } from '@leecheuk/react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import customToast from '../utils/toast';
 import API_CALL from '../helpers/API';
-import { replace } from 'formik';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slice/userSlice';
 import { useState } from 'react';
-const clientId = "1076033600801-pt7pinnejol3nlse77t6kn6j81f7giq3.apps.googleusercontent.com";
+import { jwtDecode } from 'jwt-decode';
 
 const SignUpWithGoogle = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSuccess = async (res) => {
+  const onSuccess = async (codeResponse) => {
     try {
       setIsLoading(true);
+      const credentialDecoded = jwtDecode(codeResponse.credential)
       const result = await API_CALL.post('/auth/signup/google', {
-        name: `${res.profileObj.name}`,
-        email: res.profileObj.email,
-        password: `${res.profileObj.googleId}${res.profileObj.googleId}`,
+        name: credentialDecoded.name,
+        email: credentialDecoded.email,
+        password: credentialDecoded.sub,
       });
       if (result.data.success) {
         customToast('success', result.data.message);
-        console.log(result.data.result);
         dispatch(login(result.data.result));
         localStorage.setItem('authToken', result.data.result.token);
         navigate('/', { replace: true });
       }
     } catch (error) {
-      console.log(error);
-      customToast('error', error.response.data.message);
+      if(error.response.data.rc === 400) customToast('error', 'Account already exist');
+      else customToast('error', 'Sign in Failed');
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
+  }
 
   const onFailure = (res) => {
     customToast('error', 'SignUp with google failed');
@@ -42,9 +41,8 @@ const SignUpWithGoogle = () => {
   return (
     <div id="signUpButton" className="relative">
       <div
-        className={`absolute ${
-          isLoading ? 'flex' : 'hidden'
-        } justify-center items-center w-full h-full top-0 bg-gray-500 opacity-50`}
+        className={`absolute ${isLoading ? 'flex' : 'hidden'
+          } justify-center items-center w-full h-full top-0 bg-gray-500 opacity-50`}
       >
         <svg
           aria-hidden="true"
@@ -65,12 +63,9 @@ const SignUpWithGoogle = () => {
         </svg>
       </div>
       <GoogleLogin
-        clientId={clientId}
-        buttonText="SignUp with Google"
         onSuccess={onSuccess}
-        onFailure={onFailure}
-        theme="dark"
-        cookiePolicy={'single_host_origin'}
+        onError={onFailure}
+        text='Sign in with Google'
       />
     </div>
   );

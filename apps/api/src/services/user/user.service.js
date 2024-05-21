@@ -63,8 +63,13 @@ export const findOneUserByEmailAndTypeService = async (email, type) => {
 };
 
 export const createUserService = async (data = {}, transaction) => {
-  const result = await users.create(data, { transaction: transaction });
-  return result;
+  try {
+    const result = await users.create(data, { transaction: transaction });
+    return result;
+    
+  } catch (error) {
+    console.log("ERROR:", error);
+  }
 };
 
 export const verifyUserAccountService = async (

@@ -1,40 +1,41 @@
-import { GoogleLogin, useGoogleLogout } from '@leecheuk/react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 import API_CALL from '../helpers/API';
 import customToast from '../utils/toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slice/userSlice';
 import { useState } from 'react';
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+import { jwtDecode } from 'jwt-decode';
 
 const LoginWithGoogle = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSuccess = async (res) => {
+  const onSuccess = async (codeResponse) => {
     try {
       setIsLoading(true);
-      console.log(res);
+      const credentialDecoded = jwtDecode(codeResponse.credential)
       const result = await API_CALL.post('/auth/login/google', {
-        email: res.profileObj.email,
-        password: `${res.profileObj.googleId}${res.profileObj.googleId}`,
+        email: credentialDecoded.email,
+        password: credentialDecoded.sub,
       });
       if (result.data.success) {
-        customToast('success', result.data.message);
-        localStorage.setItem('authToken', result.data.result.token);
+        customToast('success', `Welcome ${result.data.result.name}`);
+        console.log(result.data.result);
         dispatch(login(result.data.result));
+        localStorage.setItem('authToken', result.data.result.token);
         navigate('/', { replace: true });
       }
+      setIsLoading(false);
     } catch (error) {
-      console.log(error.message);
-      customToast('error', error.response.data.message);
+      customToast('error', 'Login Failed');
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
+  }
 
   const onFailure = (res) => {
-    console.log('Login Failed :', res);
+    customToast('error', 'Login with google failed');
   };
 
   return (
@@ -62,15 +63,9 @@ const LoginWithGoogle = () => {
           />
         </svg>
       </div>
-
       <GoogleLogin
-        clientId={clientId}
-        buttonText="Login with Google"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-        cookiePolicy={'single_host_origin'}
-        theme={'dark'}
-        isSignedIn={false}
+      onSuccess={onSuccess}
+      onError={onFailure}
       />
     </div>
   );
