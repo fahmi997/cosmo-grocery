@@ -18,7 +18,7 @@ export const getStockReport = async (params, setValue, setTotalPage, setLoading)
   }
 };
 
-export const getStore = async (setValue, setLoading, setDefaultValue) => { //! Used on stock report page and create discount page
+export const getStore = async (setValue, setLoading, setDefaultValue) => {
   try {
     setLoading && setLoading(true);
     const resStore = await API_CALL.get('store', {
@@ -29,7 +29,7 @@ export const getStore = async (setValue, setLoading, setDefaultValue) => { //! U
     setValue(resStore.data.result.raw);
     setLoading && setLoading(false);
 
-    setDefaultValue && setDefaultValue(resStore.data.result.raw[0].UUID); //* Set store UUID as default value
+    setDefaultValue && setDefaultValue(resStore.data.result.raw[0].UUID); 
   } catch (error) {
     console.error(error);
   }
@@ -44,7 +44,7 @@ export const getInventory = async (setValue, setLoading, queryParams, setDefault
 
     setValue(res.data.result.rows);
 
-    setDefaultValue && setDefaultValue(res.data.result.rows.length ? res.data.result.rows[0].id : null); //* Set inventory ID as default value
+    setDefaultValue && setDefaultValue(res.data.result.rows.length ? res.data.result.rows[0].id : null);
 
     setLoading && setLoading(false);
   } catch (error) {
